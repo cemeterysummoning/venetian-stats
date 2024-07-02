@@ -92,6 +92,12 @@ body {
   flex-direction: column;
   padding: 40px;
 }
+@media (max-width: 978px) {
+  .content {
+    padding: 0;
+    margin: 0;
+  }
+}
 .accordion-content {
   display: flex;
   align-content: center;
@@ -127,4 +133,9 @@ a {
 }
 h5 {
   padding: 5px;
+}
+
+
+.name {
+  text-decoration: underline;
 }

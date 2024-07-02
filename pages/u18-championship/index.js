@@ -7,6 +7,7 @@ import {Select} from '@mui/material';
 import {MenuItem} from '@mui/material';
 import {InputLabel} from '@mui/material';
 import { GoogleAuth } from 'google-auth-library';
+import Head from 'next/head';
 const categoryOrder = ["History", "Literature", "Science", "Fine Arts", "Thought & Culture", "Entertainment", "Modern World", "All"]
 function sortPlayers(a, b) {
     let a1 = a.gamePoints;
@@ -78,51 +79,58 @@ function Home({ final }) {
         setCategory(e.target.value);
     }
 
-    return ( <main className="content">
-    <div className="title"><h1>U18 Championship Standings</h1></div>
-    <FormControl sx={{m: 1, minWidth: 120}}>
-        <InputLabel id="cat-label">Category</InputLabel>
-        <Select
-            labelId="cat-label"
-            id="category-select"
-            value={category}
-            label="Category"
-            onChange={handleChange}>
-            <MenuItem value={0}>History</MenuItem>
-            <MenuItem value={1}>Literature</MenuItem>
-            <MenuItem value={2}>Science</MenuItem>
-            <MenuItem value={3}>Fine Arts</MenuItem>
-            <MenuItem value={4}>Thought and Culture</MenuItem>
-            <MenuItem value={5}>Entertainment</MenuItem>
-            <MenuItem value={6}>Modern World</MenuItem>
-            <MenuItem value={7}>All</MenuItem>
-            {
-                categoryOrder.map((cat, ind) => {
-                    (<MenuItem value={ind}>{cat}</MenuItem>)
-                })
-            }
-        </Select>
-    </FormControl>
-    <TableContainer>
-        <DataGrid
-            rows={final[category]}
-            columns={[
-                {field: 'ranking', headerName: 'Ranking', flex: 0.5, minWidth: 25},
-                {field: 'player', headerName: 'Player', flex: 2, ninWidth: 300,
-                    renderCell: (params) => (<Link href={params.row.url}>{params.row.player}</Link>)},
-                {field: 'played', headerName: 'Cycles Played', flex: 1, minWidth: 50},
-                {field: 'doubled', headerName: 'Cycles Doubled', flex: 1, minWidth: 50},
-                {field: 'points', headerName: 'Total Points', flex: 1, minWidth: 50},
-                {field: 'pointsAdj', headerName: 'Total Points (unadj. for doubling)', flex: 1, minWidth: 50},
-                {field: 'gamePoints', headerName: 'Game Points', flex: 1, minWidth: 50}    
-            ]}
-            style = {{
-                    display: "block",
-                    overflowX: "auto"
-            }}
-            />
-    </TableContainer>
-</main> );
+    return ( 
+    <>
+    <Head>
+    <title>U18 Championship</title>
+   </Head>
+        <main className="content">
+        <div className="title"><h1>U18 Championship Standings</h1></div>
+        <FormControl sx={{m: 1, minWidth: 120}}>
+            <InputLabel id="cat-label">Category</InputLabel>
+            <Select
+                labelId="cat-label"
+                id="category-select"
+                value={category}
+                label="Category"
+                onChange={handleChange}>
+                <MenuItem value={0}>History</MenuItem>
+                <MenuItem value={1}>Literature</MenuItem>
+                <MenuItem value={2}>Science</MenuItem>
+                <MenuItem value={3}>Fine Arts</MenuItem>
+                <MenuItem value={4}>Thought and Culture</MenuItem>
+                <MenuItem value={5}>Entertainment</MenuItem>
+                <MenuItem value={6}>Modern World</MenuItem>
+                <MenuItem value={7}>All</MenuItem>
+                {
+                    categoryOrder.map((cat, ind) => {
+                        (<MenuItem value={ind}>{cat}</MenuItem>)
+                    })
+                }
+            </Select>
+        </FormControl>
+        <TableContainer>
+            <DataGrid
+                rows={final[category]}
+                columns={[
+                    {field: 'ranking', headerName: 'Ranking', flex: 0.5, minWidth: 25},
+                    {field: 'player', headerName: 'Player', flex: 2, minWidth: 200,
+                        renderCell: (params) => (<Link href={params.row.url}>{params.row.player}</Link>), cellClassName: 'name'},
+                    {field: 'played', headerName: 'Cycles Played', flex: 1, minWidth: 150},
+                    {field: 'doubled', headerName: 'Cycles Doubled', flex: 1, minWidth: 150},
+                    {field: 'points', headerName: 'Total Points', flex: 1, minWidth: 150},
+                    {field: 'pointsAdj', headerName: 'Total Points (unadj. for doubling)', flex: 1, minWidth: 150},
+                    {field: 'gamePoints', headerName: 'Game Points', flex: 1, minWidth: 150}
+                ]}
+                style = {{
+                        display: "block",
+                        overflowX: "auto"
+                }}
+                />
+        </TableContainer>
+    </main> 
+    </>
+);
 }
 
 export default Home;
