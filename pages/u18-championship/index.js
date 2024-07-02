@@ -6,6 +6,7 @@ import { useState } from 'react';
 import {Select} from '@mui/material';
 import {MenuItem} from '@mui/material';
 import {InputLabel} from '@mui/material';
+import { GoogleAuth } from 'google-auth-library';
 const categoryOrder = ["History", "Literature", "Science", "Fine Arts", "Thought & Culture", "Entertainment", "Modern World", "All"]
 function sortPlayers(a, b) {
     let a1 = a.gamePoints;
@@ -15,7 +16,13 @@ function sortPlayers(a, b) {
     return (b1 < a1) ? -1 : (b1 > a1) ? 1 : ( (b2 < a2) ? -1 : (b2 > a2) ? 1 : 0)
 }
 export async function getServerSideProps() {
-    const auth = await google.auth.getClient({ scopes: ['https://www.googleapis.com/auth/spreadsheets.readonly'] });
+    const base64EncodedServiceAccount = process.env.BASE_64_ACCOUNT
+    const decodedServiceAccount = Buffer.from(base64EncodedServiceAccount, 'base64').toString('utf-8')
+    const credentials = JSON.parse(decodedServiceAccount)
+    const auth = new GoogleAuth({
+        credentials: credentials,
+        scopes: ['https://www.googleapis.com/auth/spreadsheets.readonly'] 
+    })
 
     const sheets = google.sheets({ version: 'v4', auth });
 

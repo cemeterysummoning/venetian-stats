@@ -7,6 +7,7 @@ import {Select} from '@mui/material';
 import {MenuItem} from '@mui/material';
 import {InputLabel} from '@mui/material';
 const categoryOrder = ["History", "Literature", "Science", "Fine Arts", "Thought & Culture", "Entertainment", "Modern World", "All"]
+import { GoogleAuth } from 'google-auth-library';
 
 function sortPlayers(a, b) {
     let a1 = a.gamePoints;
@@ -17,7 +18,14 @@ function sortPlayers(a, b) {
 }
 
 export async function getServerSideProps() {
-    const auth = await google.auth.getClient({ scopes: ['https://www.googleapis.com/auth/spreadsheets.readonly'] });
+    // const auth = await google.auth.getClient({ scopes: ['https://www.googleapis.com/auth/spreadsheets.readonly'] });
+    const base64EncodedServiceAccount = process.env.BASE_64_ACCOUNT
+    const decodedServiceAccount = Buffer.from(base64EncodedServiceAccount, 'base64').toString('utf-8')
+    const credentials = JSON.parse(decodedServiceAccount)
+    const auth = new GoogleAuth({
+        credentials: credentials,
+        scopes: ['https://www.googleapis.com/auth/spreadsheets.readonly'] 
+    })
 
     const sheets = google.sheets({ version: 'v4', auth });
 

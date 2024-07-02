@@ -1,6 +1,7 @@
 import { google } from "googleapis";
 import { DataGrid } from '@mui/x-data-grid';
 import { TableContainer } from '@mui/material';
+import { GoogleAuth } from "google-auth-library";
 
 const columns = [
     {field: 'category', headerName: 'Category', flex: 2},
@@ -12,7 +13,13 @@ const columns = [
 
 const categoryOrder = ["History", "Literature", "Science", "Fine Arts", "Thought & Culture", "Entertainment", "Modern World", "All"]
 export async function getServerSideProps({ query }) {
-    const auth = await google.auth.getClient({ scopes: ['https://www.googleapis.com/auth/spreadsheets.readonly'] });
+    const base64EncodedServiceAccount = process.env.BASE_64_ACCOUNT
+    const decodedServiceAccount = Buffer.from(base64EncodedServiceAccount, 'base64').toString('utf-8')
+    const credentials = JSON.parse(decodedServiceAccount)
+    const auth = new GoogleAuth({
+        credentials: credentials,
+        scopes: ['https://www.googleapis.com/auth/spreadsheets.readonly'] 
+    })
 
     const sheets = google.sheets({ version: 'v4', auth });
 
