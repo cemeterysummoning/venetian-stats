@@ -139,3 +139,7 @@ h5 {
 .name {
   text-decoration: underline;
 }
+
+.name:hover {
+  text-decoration: none;
+}
