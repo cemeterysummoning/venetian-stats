@@ -43,7 +43,7 @@ export async function getServerSideProps() {
         for (let i = 0; i < content.length; i++) {
             let total_stats = content[i][j].split(',')
             let [played, doubled, points, pointsAdj] = total_stats.map(item => Number(item))
-            let game_points = content[i][titles.length - 1]
+            let game_points = Number(content[i][titles.length - 1])
             let temp = {
                 id: i + 2,
                 url: `/international-championship/players/${i + 2}`, 
